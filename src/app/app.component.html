@@ -1,0 +1,33 @@
+<ion-app>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+
+  <ion-menu auto-hide="true" content-id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu List</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-menu-toggle>
+        <ion-item routerLink="/home">
+          <ion-icon name="home" slot="start"></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item routerLink="/tambahpesanan">
+          <ion-icon name="cart" slot="start"></ion-icon>
+          <ion-label>Tambah Pesanan</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item routerLink="/stock">
+          <ion-icon name="pizza" slot="start"></ion-icon>
+          <ion-label>Stock Menu</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+</ion-app>
