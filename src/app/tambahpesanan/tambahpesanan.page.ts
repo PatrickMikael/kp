@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-tambahpesanan',
   templateUrl: './tambahpesanan.page.html',
   styleUrls: ['./tambahpesanan.page.scss'],
+  standalone: false
 })
 export class TambahpesananPage implements OnInit {
 
