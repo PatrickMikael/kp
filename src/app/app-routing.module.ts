@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'stock',
     loadChildren: () => import('./stock/stock.module').then( m => m.StockPageModule)
   },
+  {
+    path: 'tambahcustomer',
+    loadChildren: () => import('./tambahcustomer/tambahcustomer.module').then( m => m.TambahcustomerPageModule)
+  },
 ];
 
 @NgModule({

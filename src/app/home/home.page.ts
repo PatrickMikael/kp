@@ -10,4 +10,6 @@ export class HomePage {
 
   constructor() {}
 
+  jenistampilan="pesanan";
+
 }
