@@ -19,6 +19,22 @@ const routes: Routes = [
     path: 'stock',
     loadChildren: () => import('./stock/stock.module').then( m => m.StockPageModule)
   },
+  {
+    path: 'tambahcustomer',
+    loadChildren: () => import('./tambahcustomer/tambahcustomer.module').then( m => m.TambahcustomerPageModule)
+  },
+  {
+    path: 'katalog',
+    loadChildren: () => import('./katalog/katalog.module').then( m => m.KatalogPageModule)
+  },  {
+    path: 'daftarcustomer',
+    loadChildren: () => import('./daftarcustomer/daftarcustomer.module').then( m => m.DaftarcustomerPageModule)
+  },
+  {
+    path: 'daftarpesanan',
+    loadChildren: () => import('./daftarpesanan/daftarpesanan.module').then( m => m.DaftarpesananPageModule)
+  },
+
 ];
 
 @NgModule({

@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>daftarpesanan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="orders.length > 0">
+    <ion-item *ngFor="let order of orders">
+      <ion-label>
+        <h2>#{{ order.idpesanan }} - {{ order.nama_customer }}</h2>
+        <p>Tanggal: {{ order.created_at | date }}</p>
+        <p>Ambil: {{ order.waktu_ambil | date:'shortTime' }}</p>
+        <p>Total: Rp{{ order.harga_total }}</p>
+        <p>Status: {{ order.status }} | {{ order.tipe_ambil }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="orders.length === 0" color="medium">
+    Belum ada pesanan.
+  </ion-text>
+</ion-content>

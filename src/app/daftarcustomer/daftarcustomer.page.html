@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Daftar Customer</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tambahcustomer">
+        <ion-icon name="person-add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="customers.length > 0">
+    <ion-item *ngFor="let customer of customers">
+      <ion-label>
+        <h2>{{ customer.nama }}</h2>
+        <p>Pengirim: {{ customer.pengirim }}</p>
+        <p>Jenis Pesanan: {{ customer.jenis_pesanan }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="customers.length === 0" color="medium" class="ion-padding">
+    Tidak ada data customer.
+  </ion-text>
+</ion-content>

@@ -1,55 +1,31 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card button (click)="navigateTo('/katalog')">
+    <ion-card-header>
+      <ion-card-title>📦 Katalog Produk</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
-  <ion-segment [(ngModel)]="jenistampilan" >
-    <ion-segment-button value="pesanan">
-      <ion-label>Pesanan</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="customer">
-      <ion-label>Customer</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-  
-  <ion-list *ngIf="jenistampilan == 'pesanan'">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Card Title</ion-card-title>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      </ion-card-header>
-    
-      <ion-card-content>
-        Ini Pesanan
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+  <ion-card button (click)="navigateTo('/daftarcustomer')">
+    <ion-card-header>
+      <ion-card-title>👥 Daftar Customer</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
-  <ion-list *ngIf="jenistampilan == 'customer'">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Card Title</ion-card-title>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      </ion-card-header>
-    
-      <ion-card-content>
-        Ini Customer
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+  <ion-card button (click)="navigateTo('/tambahcustomer')">
+    <ion-card-header>
+      <ion-card-title>➕ Tambah Customer</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card button (click)="navigateTo('/tambahpesanan')">
+    <ion-card-header>
+      <ion-card-title>📝 Tambah Pesanan</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>

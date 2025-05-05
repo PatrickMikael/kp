@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataserviceService } from '../dataservice.service';
+import { CustomerService } from '../services/customer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tambahcustomer',
@@ -8,29 +9,34 @@ import { DataserviceService } from '../dataservice.service';
   standalone:false,
 })
 export class TambahcustomerPage implements OnInit {
-
-  constructor(private dataservice: DataserviceService) { }
-
+  constructor(private customerService: CustomerService,
+    private router: Router) { }
+  customer = {
+    nama: '',
+    pengirim: '',
+    jenis_pesanan: '',
+  }
   ngOnInit() {
   }
+  tambahCustomer() {
+    if (
+      this.customer.nama.trim() === '' ||
+      this.customer.pengirim.trim() === '' ||
+      this.customer.jenis_pesanan.trim() === ''
+    ) {
+      alert('Semua data harus diisi');
+      return;
+    }
 
-  new_nama = '';
-  new_pengirim ='';
-  new_jenis_pesanan ='';
-
-  submitcust()
-{
-//this.foodservice.addPasta(this.new_name,this.new_url,this.new_desc,this.new_price)
-   this.dataservice.addCustomer(this.new_nama,            
-      this.new_pengirim,this.new_jenis_pesanan).subscribe((response: any) => {
-        if(response.result==='success'){
-          alert("success")
-        }
-        else
-        {
-          alert(response.message)
-        }
-   });}
-
-
+    this.customerService.createCustomer(this.customer).subscribe({
+      next: (res) => {
+        alert('Customer berhasil ditambahkan');
+        this.router.navigate(['/']); // Ubah ke halaman yang sesuai jika perlu
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        alert('Gagal menambahkan customer');
+      }
+    });
+  }
 }

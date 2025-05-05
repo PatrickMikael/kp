@@ -4,30 +4,40 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tambah Customer</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-list>
+<ion-content class="ion-padding">
+  <form (ngSubmit)="tambahCustomer()">
     <ion-item>
-      <ion-input [(ngModel)]="new_nama" label="Nama Customer"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="new_pengirim" label="Nama Pengirim"></ion-input>
+      <ion-label position="floating">Nama</ion-label>
+      <ion-input
+        [(ngModel)]="customer.nama"
+        name="nama"
+        required
+      ></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-radio-group [(ngModel)]="new_jenis_pesanan" value="ambil sendiri">
-        <ion-label>Jenis Pesanan</ion-label><br/>
-        <ion-radio labelPlacement="start" value="satuan">ambil sendiri</ion-radio><br />
-        <ion-radio labelPlacement="start" value="paket">jasa kirim</ion-radio>
-      </ion-radio-group>
+      <ion-label position="floating">Pengirim</ion-label>
+      <ion-input
+        [(ngModel)]="customer.pengirim"
+        name="pengirim"
+        required
+      ></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-button onclick="submitcust()">Tambah Customer</ion-button>
+      <ion-label position="floating">Jenis Pesanan</ion-label>
+      <ion-select
+        [(ngModel)]="customer.jenis_pesanan"
+        name="jenis_pesanan"
+        required
+      >
+        <ion-select-option value="Langsung">Langsung</ion-select-option>
+        <ion-select-option value="PO">Pre-Order</ion-select-option>
+      </ion-select>
     </ion-item>
-  </ion-list>
+
+    <ion-button expand="full" type="submit" class="ion-margin-top">
+      Simpan Customer
+    </ion-button>
+  </form>
 </ion-content>

@@ -8,15 +8,40 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tambah Pesanan</ion-title>
-    </ion-toolbar>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label>Pilih Customer</ion-label>
+    <ion-select [(ngModel)]="selectedCustomer">
+      <ion-select-option *ngFor="let c of customers" [value]="c.idcustomer">
+        {{ c.nama }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 
-    
-  </ion-header>
+  <ion-item>
+    <ion-label position="floating">Waktu Ambil</ion-label>
+    <ion-datetime presentation="date" [(ngModel)]="waktuAmbil"></ion-datetime>
+  </ion-item>
 
-  
+  <ion-list>
+    <ion-item *ngFor="let menu of menus">
+      <ion-label>
+        <h2>{{ menu.nama }}</h2>
+        <p>Harga: {{ menu.harga }}</p>
+      </ion-label>
+      <ion-button fill="outline" size="small" (click)="tambahKeKeranjang(menu)">Tambah</ion-button>
+    </ion-item>
+  </ion-list>
 
+  <ion-list>
+    <ion-item *ngFor="let item of keranjang">
+      <ion-label>
+        {{ item.nama }} - Kuantitas: {{ item.kuantitas }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" (click)="submitPesanan()" [disabled]="!selectedCustomer || !waktuAmbil || keranjang.length === 0">
+    Simpan Pesanan
+  </ion-button>
 </ion-content>
