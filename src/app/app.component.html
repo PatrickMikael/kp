@@ -1,39 +1,20 @@
 <ion-app>
-  <ion-router-outlet id="main-content"></ion-router-outlet>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <ion-list-header>Aplikasi Kasir</ion-list-header>
+          <ion-note>Manajemen Pesanan & Katalog</ion-note>
 
-  <ion-menu auto-hide="true" content-id="main-content">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Menu List</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-list>
-        <ion-menu-toggle>
-        <ion-item routerLink="/home">
-          <ion-icon name="home" slot="start"></ion-icon>
-          <ion-label>Home</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-      <ion-menu-toggle>
-        <ion-item routerLink="/tambahpesanan">
-          <ion-icon name="cart" slot="start"></ion-icon>
-          <ion-label>Tambah Pesanan</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-      <ion-menu-toggle>
-        <ion-item routerLink="/tambahcustomer">
-          <ion-icon name="person-add" slot="start"></ion-icon>
-          <ion-label>Tambah Customer</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-      <ion-menu-toggle>
-        <ion-item routerLink="/stock">
-          <ion-icon name="pizza" slot="start"></ion-icon>
-          <ion-label>Stock Menu</ion-label>
-        </ion-item>
-      </ion-menu-toggle>
-      </ion-list>
-    </ion-content>
-  </ion-menu>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>
