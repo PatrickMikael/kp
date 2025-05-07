@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../services/customer.service';
 import { KueService } from '../services/kue.service';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-tambahpesanan',
@@ -13,14 +13,15 @@ import { Router } from '@angular/router';
 export class TambahpesananPage implements OnInit {
   customers: any[] = [];
   menus: any[] = [];
-  selectedCustomer: number | null = null;
+  selectedCustomerId: number | null = null;
   waktuAmbil: string = '';
-  keranjang: { idmenu: number; nama: string; kuantitas: number }[] = [];
+  selectedProducts: any[] = []; // Produk yang dipilih
+  submitting: boolean = false;
 
   constructor(
     private customerService: CustomerService,
     private kueService: KueService,
-    private http: HttpClient,
+    private orderService: OrderService,
     private router: Router
   ) {}
 
@@ -41,46 +42,71 @@ export class TambahpesananPage implements OnInit {
     });
   }
 
-  tambahKeKeranjang(menu: any) {
-    const index = this.keranjang.findIndex(
-      (item) => item.idmenu === menu.idmenu
+  addProduct(product: any) {
+    const existingProduct = this.selectedProducts.find(
+      (item) => item.idmenu === product.idmenu
     );
-    if (index === -1) {
-      this.keranjang.push({
-        idmenu: menu.idmenu,
-        nama: menu.nama,
-        kuantitas: 1,
-      });
+
+    if (existingProduct) {
+      existingProduct.kuantitas++; 
+      existingProduct.subtotal = existingProduct.kuantitas * existingProduct.harga;
     } else {
-      this.keranjang[index].kuantitas++;
+      this.selectedProducts.push({
+        ...product,
+        kuantitas: 1,
+        subtotal: product.harga, 
+      });
     }
   }
 
-  submitPesanan() {
-    const items = this.keranjang.map((item) => ({
+  removeProduct(index: number) {
+    this.selectedProducts.splice(index, 1);
+  }
+
+  updateQuantity(index: number, event: any) {
+    const quantity = event.detail.value;
+    if (quantity < 1) return; 
+    this.selectedProducts[index].kuantitas = quantity;
+    this.selectedProducts[index].subtotal = quantity * this.selectedProducts[index].harga;
+  }
+
+  get totalHarga() {
+    return this.selectedProducts.reduce((acc, item) => acc + item.subtotal, 0);
+  }
+
+  formatPrice(price: number): string {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price);
+  }
+
+  submitOrder() {
+    this.submitting = true;
+    const items = this.selectedProducts.map((item) => ({
       idmenu: item.idmenu,
       kuantitas: item.kuantitas,
     }));
-
     const payload = {
-      idcustomer: this.selectedCustomer,
+      idcustomer: this.selectedCustomerId,
       waktu_ambil: this.waktuAmbil,
       items,
     };
-    this.http
-      .post('http://localhost:3000/api/orders/create', payload)
-      .subscribe({
-        next: (res) => {
-          alert('Pesanan berhasil ditambahkan');
-          this.selectedCustomer = null;
-          this.waktuAmbil = '';
-          this.keranjang = [];
-          this.router.navigate(['/home']);
-        },
-        error: (err) => {
-          console.error('Error:', err);
-          alert('Gagal menambahkan pesanan');
-        },
-      });
+
+    console.log('Payload yang dikirim:', payload);
+
+    this.orderService.createOrder(payload).subscribe({
+      next: () => {
+        alert('Pesanan berhasil ditambahkan');
+        this.selectedCustomerId = null;
+        this.waktuAmbil = '';
+        this.selectedProducts = []; 
+        this.router.navigate(['/daftarpesanan']); 
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        alert('Gagal menambahkan pesanan');
+      },
+      complete: () => {
+        this.submitting = false;
+      },
+    });
   }
 }

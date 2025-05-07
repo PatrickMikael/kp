@@ -13,4 +13,8 @@ export class OrderService {
   getAllOrders(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl);
   }
+
+  createOrder(payload: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create`, payload);
+  }
 }

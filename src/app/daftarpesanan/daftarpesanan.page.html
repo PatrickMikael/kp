@@ -1,23 +1,72 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>daftarpesanan</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Daftar Pesanan</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addNewOrder()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list *ngIf="orders.length > 0">
-    <ion-item *ngFor="let order of orders">
-      <ion-label>
-        <h2>#{{ order.idpesanan }} - {{ order.nama_customer }}</h2>
-        <p>Tanggal: {{ order.created_at | date }}</p>
-        <p>Ambil: {{ order.waktu_ambil | date:'shortTime' }}</p>
-        <p>Total: Rp{{ order.harga_total }}</p>
-        <p>Status: {{ order.status }} | {{ order.tipe_ambil }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Daftar Pesanan</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <ion-text *ngIf="orders.length === 0" color="medium">
-    Belum ada pesanan.
-  </ion-text>
+  <div class="container">
+    <ion-refresher slot="fixed" (ionRefresh)="loadOrders()">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!loading && !error && orders.length > 0">
+      <ion-item *ngFor="let order of orders">
+        <ion-label>
+          <h2>#{{ order.idpesanan }} - {{ order.nama_customer }}</h2>
+          <p>Dibuat: {{ formatDate(order.created_at) }}</p>
+          <p>Ambil: {{ formatDate(order.waktu_ambil) }}</p>
+          <p>Total: {{ formatPrice(order.harga_total) }}</p>
+        </ion-label>
+        <ion-badge slot="end" [color]="getStatusColor(order.status)">{{ order.status }}</ion-badge>
+        <ion-note slot="end">{{ order.tipe_ambil }}</ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="loading">
+      <ion-item *ngFor="let i of [1,2,3,4,5]">
+        <ion-label>
+          <h2><ion-skeleton-text animated style="width: 70%"></ion-skeleton-text></h2>
+          <p><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></p>
+          <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+          <p><ion-skeleton-text animated style="width: 40%"></ion-skeleton-text></p>
+        </ion-label>
+        <ion-skeleton-text animated style="width: 20%" slot="end"></ion-skeleton-text>
+      </ion-item>
+    </ion-list>
+
+    <ion-card *ngIf="!loading && orders.length === 0 && !error">
+      <ion-card-header>
+        <ion-card-title>Tidak Ada Data</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Belum ada pesanan yang dibuat.</p>
+        <ion-button expand="block" (click)="addNewOrder()">Buat Pesanan Baru</ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="error">
+      <ion-card-header>
+        <ion-card-title>Error</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ error }}</p>
+        <ion-button expand="block" (click)="loadOrders()">Coba Lagi</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

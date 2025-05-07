@@ -15,27 +15,35 @@ export class TambahcustomerPage implements OnInit {
     nama: '',
     pengirim: '',
     jenis_pesanan: '',
+    tipe_ambil: ''
   }
+  submitting: boolean = false;
+
   ngOnInit() {
   }
   tambahCustomer() {
     if (
       this.customer.nama.trim() === '' ||
       this.customer.pengirim.trim() === '' ||
-      this.customer.jenis_pesanan.trim() === ''
+      this.customer.jenis_pesanan.trim() === '' ||
+      this.customer.tipe_ambil.trim() === ''
     ) {
       alert('Semua data harus diisi');
       return;
     }
-
+    
+    this.submitting = true;
     this.customerService.createCustomer(this.customer).subscribe({
       next: (res) => {
         alert('Customer berhasil ditambahkan');
-        this.router.navigate(['/']); // Ubah ke halaman yang sesuai jika perlu
+        this.router.navigate(['/']); 
       },
       error: (err) => {
         console.error('Error:', err);
         alert('Gagal menambahkan customer');
+      },
+      complete: () => {
+        this.submitting = false;
       }
     });
   }

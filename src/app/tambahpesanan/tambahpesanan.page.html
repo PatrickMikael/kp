@@ -1,47 +1,94 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Tambah Pesanan</ion-title>
-
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <ion-title>Tambah Pesanan</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-item>
-    <ion-label>Pilih Customer</ion-label>
-    <ion-select [(ngModel)]="selectedCustomer">
-      <ion-select-option *ngFor="let c of customers" [value]="c.idcustomer">
-        {{ c.nama }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tambah Pesanan</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <ion-item>
-    <ion-label position="floating">Waktu Ambil</ion-label>
-    <ion-datetime presentation="date" [(ngModel)]="waktuAmbil"></ion-datetime>
-  </ion-item>
+  <div class="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Informasi Pesanan</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">Pilih Customer <ion-text color="danger">*</ion-text></ion-label>
+            <ion-select [(ngModel)]="selectedCustomerId" placeholder="Pilih customer" interface="action-sheet">
+              <ion-select-option *ngFor="let customer of customers" [value]="customer.idcustomer">
+                {{ customer.nama }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
 
-  <ion-list>
-    <ion-item *ngFor="let menu of menus">
-      <ion-label>
-        <h2>{{ menu.nama }}</h2>
-        <p>Harga: {{ menu.harga }}</p>
-      </ion-label>
-      <ion-button fill="outline" size="small" (click)="tambahKeKeranjang(menu)">Tambah</ion-button>
-    </ion-item>
-  </ion-list>
+          <ion-item>
+            <ion-label position="floating">Waktu Ambil <ion-text color="danger">*</ion-text></ion-label>
+            <ion-datetime [(ngModel)]="waktuAmbil" display-format="DD MMM YYYY HH:mm" picker-format="DD MMM YYYY HH:mm" placeholder="Pilih waktu ambil"></ion-datetime>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
 
-  <ion-list>
-    <ion-item *ngFor="let item of keranjang">
-      <ion-label>
-        {{ item.nama }} - Kuantitas: {{ item.kuantitas }}
-      </ion-label>
-    </ion-item>
-  </ion-list>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Produk</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let product of menus">
+            <ion-label>
+              <h2>{{ product.nama }}</h2>
+              <p>{{ formatPrice(product.harga) }}</p>
+            </ion-label>
+            <ion-button slot="end" (click)="addProduct(product)">
+              <ion-icon name="add"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
 
-  <ion-button expand="block" (click)="submitPesanan()" [disabled]="!selectedCustomer || !waktuAmbil || keranjang.length === 0">
-    Simpan Pesanan
-  </ion-button>
+    <ion-card *ngIf="selectedProducts.length > 0">
+      <ion-card-header>
+        <ion-card-title>Pesanan</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let item of selectedProducts; let i = index">
+            <ion-label>
+              <h2>{{ item.nama }}</h2>
+              <p>{{ formatPrice(item.harga) }} x {{ item.kuantitas }} = {{ formatPrice(item.subtotal) }}</p>
+            </ion-label>
+            <ion-input type="number" [value]="item.kuantitas" (ionChange)="updateQuantity(i, $event)" slot="end" class="quantity-input"></ion-input>
+            <ion-button slot="end" color="danger" (click)="removeProduct(i)">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h2>Total</h2>
+            </ion-label>
+            <ion-note slot="end" color="primary">{{ formatPrice(totalHarga) }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="ion-padding">
+      <ion-button expand="block" (click)="submitOrder()" [disabled]="submitting || selectedProducts.length === 0">
+        <ion-spinner name="crescent" *ngIf="submitting"></ion-spinner>
+        <span *ngIf="!submitting">Buat Pesanan</span>
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

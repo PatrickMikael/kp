@@ -1,43 +1,56 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Tambah Customer</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form (ngSubmit)="tambahCustomer()">
-    <ion-item>
-      <ion-label position="floating">Nama</ion-label>
-      <ion-input
-        [(ngModel)]="customer.nama"
-        name="nama"
-        required
-      ></ion-input>
-    </ion-item>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tambah Customer</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-    <ion-item>
-      <ion-label position="floating">Pengirim</ion-label>
-      <ion-input
-        [(ngModel)]="customer.pengirim"
-        name="pengirim"
-        required
-      ></ion-input>
-    </ion-item>
+  <div class="container">
+    <form (ngSubmit)="tambahCustomer()">
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Nama Customer <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input [(ngModel)]="customer.nama" name="nama" required></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Jenis Pesanan</ion-label>
-      <ion-select
-        [(ngModel)]="customer.jenis_pesanan"
-        name="jenis_pesanan"
-        required
-      >
-        <ion-select-option value="Langsung">Langsung</ion-select-option>
-        <ion-select-option value="PO">Pre-Order</ion-select-option>
-      </ion-select>
-    </ion-item>
+        <ion-item>
+          <ion-label position="floating">Pengirim <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input [(ngModel)]="customer.pengirim" name="pengirim" required></ion-input>
+        </ion-item>
 
-    <ion-button expand="full" type="submit" class="ion-margin-top">
-      Simpan Customer
-    </ion-button>
-  </form>
+        <ion-item>
+          <ion-label position="floating">Jenis Pesanan <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="customer.jenis_pesanan" name="jenis_pesanan" placeholder="Pilih jenis pesanan" required>
+            <ion-select-option value="Reguler">Reguler</ion-select-option>
+            <ion-select-option value="Pre-Order">Pre-Order</ion-select-option>
+            <ion-select-option value="Custom">Custom</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Tipe Ambil <ion-text color="danger">*</ion-text></ion-label>
+          <ion-select [(ngModel)]="customer.tipe_ambil" name="tipe_ambil" placeholder="Pilih tipe pengambilan" required>
+            <ion-select-option value="Pickup">Pickup</ion-select-option>
+            <ion-select-option value="Delivery">Delivery</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <div class="ion-padding">
+        <ion-button expand="block" type="submit" [disabled]="submitting">
+          <ion-spinner name="crescent" *ngIf="submitting"></ion-spinner>
+          <span *ngIf="!submitting">Simpan Customer</span>
+        </ion-button>
+      </div>
+    </form>
+  </div>
 </ion-content>
