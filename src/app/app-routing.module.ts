@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'daftarpesanan',
     loadChildren: () => import('./daftarpesanan/daftarpesanan.module').then( m => m.DaftarpesananPageModule)
   },
+  {
+    path: 'report',
+    loadChildren: () => import('./report/report.module').then( m => m.ReportPageModule)
+  },
 
 ];
 

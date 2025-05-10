@@ -14,6 +14,7 @@ export class AppComponent {
     { title: "Daftar Customer", url: "/daftarcustomer", icon: "people" },
     { title: "Tambah Pesanan", url: "/tambahpesanan", icon: "cart" },
     { title: "Daftar Pesanan", url: "/daftarpesanan", icon: "receipt" },
+    { title: "Report Sale", url: "/report", icon: "clipboard" },
   ]
   constructor() {}
 }
