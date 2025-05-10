@@ -15,7 +15,6 @@ export class TambahcustomerPage implements OnInit {
     nama: '',
     pengirim: '',
     jenis_pesanan: '',
-    //tipe_ambil: ''
   }
   submitting: boolean = false;
 
@@ -25,8 +24,7 @@ export class TambahcustomerPage implements OnInit {
     if (
       this.customer.nama.trim() === '' ||
       this.customer.pengirim.trim() === '' ||
-      this.customer.jenis_pesanan.trim() === '' 
-      //this.customer.tipe_ambil.trim() === ''
+      this.customer.jenis_pesanan.trim() === ''
     ) {
       alert('Semua data harus diisi');
       return;
