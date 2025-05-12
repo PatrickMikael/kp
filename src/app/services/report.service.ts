@@ -3,22 +3,34 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReportService {
   private baseUrl = 'http://localhost:3000/api/report';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getMonthlySales(): Observable<any[]> {
-      return this.http.get<any[]>(this.baseUrl);
-    } 
+    return this.http.get<any[]>(`${this.baseUrl}/monthly`);
+  }
 
-  getCustomerBill(): Observable<any[]> {
-      return this.http.get<any[]>(this.baseUrl);
-    } 
+  getCustomerBill(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/tagihan/${id}`);
+  }
 
-  getPopularMenu(): Observable<any[]> {
-      return this.http.get<any[]>(this.baseUrl);
-    } 
+  getPopularMenus(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/popular`);
+  }
+
+  getTotalCustomers(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/total-customers`);
+  }
+
+  getTotalOrders(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/total-orders`);
+  }
+
+  getTotalRevenue(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/total-revenue`);
+  }
 }
