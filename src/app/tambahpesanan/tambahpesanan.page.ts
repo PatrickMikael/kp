@@ -48,13 +48,14 @@ export class TambahpesananPage implements OnInit {
     );
 
     if (existingProduct) {
-      existingProduct.kuantitas++; 
-      existingProduct.subtotal = existingProduct.kuantitas * existingProduct.harga;
+      existingProduct.kuantitas++;
+      existingProduct.subtotal =
+        existingProduct.kuantitas * existingProduct.harga;
     } else {
       this.selectedProducts.push({
         ...product,
         kuantitas: 1,
-        subtotal: product.harga, 
+        subtotal: product.harga,
       });
     }
   }
@@ -65,9 +66,10 @@ export class TambahpesananPage implements OnInit {
 
   updateQuantity(index: number, event: any) {
     const quantity = event.detail.value;
-    if (quantity < 1) return; 
+    if (quantity < 1) return;
     this.selectedProducts[index].kuantitas = quantity;
-    this.selectedProducts[index].subtotal = quantity * this.selectedProducts[index].harga;
+    this.selectedProducts[index].subtotal =
+      quantity * this.selectedProducts[index].harga;
   }
 
   get totalHarga() {
@@ -75,7 +77,10 @@ export class TambahpesananPage implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price);
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(price);
   }
 
   submitOrder() {
@@ -93,12 +98,15 @@ export class TambahpesananPage implements OnInit {
     console.log('Payload yang dikirim:', payload);
 
     this.orderService.createOrder(payload).subscribe({
-      next: () => {
+      next: (res) => {
         alert('Pesanan berhasil ditambahkan');
+        const orderId = res.orderId; 
+
         this.selectedCustomerId = null;
         this.waktuAmbil = '';
-        this.selectedProducts = []; 
-        this.router.navigate(['/daftarpesanan']); 
+        this.selectedProducts = [];
+
+        this.router.navigate(['/pembayaran', orderId]);
       },
       error: (err) => {
         console.error('Error:', err);

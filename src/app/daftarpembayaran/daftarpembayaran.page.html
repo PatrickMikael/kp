@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Verifikasi Pembayaran</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="pembayaran.length > 0">
+    <ion-item *ngFor="let item of pembayaran">
+      <ion-label>
+        <h2>{{ item.nama_customer }} - {{ item.metode }}</h2>
+        <p>ID Pesanan: {{ item.idpesanan }}</p>
+        <p>Jumlah Bayar: {{ item.jumlah_bayar | currency:'IDR' }}</p>
+        <img [src]="getBuktiUrl(item.bukti_bayar)" alt="bukti" width="100">
+      </ion-label>
+      <ion-button slot="end" color="success" (click)="verifikasi(item.idpembayaran)">
+        Tandai Lunas
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="pembayaran.length === 0">
+    <p>Tidak ada pembayaran yang menunggu verifikasi.</p>
+  </ion-text>
+</ion-content>

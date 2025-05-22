@@ -26,7 +26,8 @@ const routes: Routes = [
   {
     path: 'katalog',
     loadChildren: () => import('./katalog/katalog.module').then( m => m.KatalogPageModule)
-  },  {
+  },
+  {
     path: 'daftarcustomer',
     loadChildren: () => import('./daftarcustomer/daftarcustomer.module').then( m => m.DaftarcustomerPageModule)
   },
@@ -37,6 +38,21 @@ const routes: Routes = [
   {
     path: 'report',
     loadChildren: () => import('./report/report.module').then( m => m.ReportPageModule)
+  },
+  {
+    path: 'daftarbelumbayar',
+    loadChildren: () => import('./daftarbelumbayar/daftarbelumbayar.module').then( m => m.DaftarbelumbayarPageModule)
+  },
+  {
+    path: 'pembayaran/:id',
+    loadChildren: () => import('./pembayaran/pembayaran.module').then( m => m.PembayaranPageModule)
+  },  {
+    path: 'daftarpembayaran',
+    loadChildren: () => import('./daftarpembayaran/daftarpembayaran.module').then( m => m.DaftarpembayaranPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
 
 ];
