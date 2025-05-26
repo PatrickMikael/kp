@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pembayaran</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informasi Pembayaran</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Total Tagihan</ion-label>
+        <ion-note slot="end" color="primary">
+          {{ hargaTotal | currency:'IDR' }}
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Metode Pembayaran</ion-label>
+        <ion-select [(ngModel)]="metode">
+          <ion-select-option value="Cash">Cash</ion-select-option>
+          <ion-select-option value="QRIS">QRIS</ion-select-option>
+          <ion-select-option value="Transfer">Transfer</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Upload Bukti Pembayaran</ion-label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+      </ion-item>
+
+      <ion-button
+        expand="block"
+        (click)="submitPembayaran()"
+        [disabled]="loading"
+      >
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+        <span *ngIf="!loading">Bayar</span>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

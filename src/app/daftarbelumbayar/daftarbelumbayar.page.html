@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Belum Dibayar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="orders.length > 0">
+    <ion-item *ngFor="let order of orders">
+      <ion-label>
+        <h2>{{ order.nama_customer }}</h2>
+        <p>{{ order.created_at }} - {{ order.waktu_ambil }}</p>
+        <p>Total: {{ order.harga_total | currency:'IDR' }}</p>
+      </ion-label>
+      <ion-button slot="end" (click)="goToBayar(order.idpesanan)">Bayar Sekarang</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="orders.length === 0">
+    <p>Tidak ada pesanan yang belum dibayar.</p>
+  </ion-text>
+</ion-content>

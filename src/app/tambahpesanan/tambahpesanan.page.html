@@ -23,6 +23,7 @@
         <ion-list>
           <ion-item>
             <ion-label position="floating">Pilih Customer <ion-text color="danger">*</ion-text></ion-label>
+            <br>
             <ion-select [(ngModel)]="selectedCustomerId" placeholder="Pilih customer" interface="action-sheet">
               <ion-select-option *ngFor="let customer of customers" [value]="customer.idcustomer">
                 {{ customer.nama }}
@@ -32,6 +33,7 @@
 
           <ion-item>
             <ion-label position="floating">Waktu Ambil <ion-text color="danger">*</ion-text></ion-label>
+            <br>
             <ion-datetime [(ngModel)]="waktuAmbil" display-format="DD MMM YYYY HH:mm" picker-format="DD MMM YYYY HH:mm" placeholder="Pilih waktu ambil"></ion-datetime>
           </ion-item>
         </ion-list>

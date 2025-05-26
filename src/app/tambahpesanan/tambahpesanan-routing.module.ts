@@ -7,7 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: TambahpesananPage
+  },
+  {
+    path: 'pembayaran',
+    loadChildren: () => import('../pembayaran/pembayaran.module').then( m => m.PembayaranPageModule)
   }
+
 ];
 
 @NgModule({
