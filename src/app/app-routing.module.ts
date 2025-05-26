@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'report',
     loadChildren: () => import('./report/report.module').then( m => m.ReportPageModule)
   },
+  {
+    path: 'stockmanager',
+    loadChildren: () => import('./stockmanager/stockmanager.module').then( m => m.StockmanagerPageModule)
+  },
 
 ];
 

@@ -20,6 +20,7 @@ export class TambahcustomerPage implements OnInit {
 
   ngOnInit() {
   }
+  
   tambahCustomer() {
     if (
       this.customer.nama.trim() === '' ||
