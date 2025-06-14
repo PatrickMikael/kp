@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StockService } from '../services/stock.service';
 import { Router } from '@angular/router';
+import { KueService } from '../services/kue.service';
 
 @Component({
   selector: 'app-stock',
@@ -10,30 +11,17 @@ import { Router } from '@angular/router';
 })
 export class StockPage implements OnInit {
   stocks: any[] = [];
-  loading: boolean = false;
-  error: string | null = null;
+  menus: any[] = [];
 
-  constructor(private stockService: StockService, 
-      private router: Router) { }
+  constructor(private stokService: StockService) { }
 
   ngOnInit() {
-    this.loadStocks();
+    this.loadStock();
   }
 
-  loadStocks() {
-    this.loading = true;
-    this.error = null;
-    this.stockService.getAllStocks().subscribe({
-      next: (res) => {
-        this.stocks = res;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.loading = false;
-        console.error('Gagal ambil stock:', err);
-        console.error('Error:', err);
-      }
+  loadStock() {
+    this.stokService.getAllStock().subscribe(res => {
+      this.stocks = res;
     });
   }
-
 }

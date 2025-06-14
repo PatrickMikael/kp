@@ -23,16 +23,17 @@ export class LoginPage implements OnInit {
       .subscribe({
         next: (res) => {
           const token = res.token;
-          
+
           localStorage.setItem('token', res.token);
           alert('Login berhasil!');
-          this.router.navigate(['/home']);
           localStorage.setItem('token', res.token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('role', res.role);
           const decoded: any = jwtDecode(token);
           localStorage.setItem('username', decoded.username);
           localStorage.setItem('role', decoded.role);
+          this.auth.loginSuccess(res.token);
+          this.router.navigate(['/home']);
         },
         error: (err) => {
           console.error('Login gagal:', err);

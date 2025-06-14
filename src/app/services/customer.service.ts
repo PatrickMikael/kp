@@ -14,7 +14,6 @@ export class CustomerService {
     nama: string;
     pengirim: string;
     jenis_pesanan: string;
-    //tipe_ambil: string;
   }): Observable<any> {
     return this.http.post(`${this.baseUrl}/create`, data);
   } 

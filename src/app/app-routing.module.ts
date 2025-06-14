@@ -46,7 +46,8 @@ const routes: Routes = [
   {
     path: 'pembayaran/:id',
     loadChildren: () => import('./pembayaran/pembayaran.module').then( m => m.PembayaranPageModule)
-  },  {
+  },
+  {
     path: 'daftarpembayaran',
     loadChildren: () => import('./daftarpembayaran/daftarpembayaran.module').then( m => m.DaftarpembayaranPageModule)
   },
@@ -58,7 +59,6 @@ const routes: Routes = [
     path: 'stockmanager',
     loadChildren: () => import('./stockmanager/stockmanager.module').then( m => m.StockmanagerPageModule)
   },
-
 ];
 
 @NgModule({

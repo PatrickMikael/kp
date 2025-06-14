@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StockService } from '../services/stock.service';
-import { Router } from '@angular/router';
+import { KueService } from '../services/kue.service';
 
 @Component({
   selector: 'app-stockmanager',
@@ -9,77 +9,40 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class StockmanagerPage implements OnInit {
+  menus: any[] = [];
+  selectedIdMenu: number | null = null;
+  jumlah: number | null = null;
+  tanggal: string = '';
+  alasan: string = '';
 
-  constructor(private stockService: StockService,
-      private router: Router) { }
+  constructor(
+    private stockService: StockService,
+    private kueService: KueService
+  ) {}
 
-    stockmasuk = {
-      jumlah_masuk: 0,
-      tanggal_masuk: '', //harusnya bukan diisi manual
-      nama_menu: '', //diganti kalo nggak sesuai
-  }
-
-    stockkeluar = {
-      jumlah_keluar: 0,
-      tanggal_keluar: '', //sama
-      nama_menu: '', //diganti kalo nggak sesuai
-      alasan: '',
-  }
-  submitting: boolean = false;
-  
   ngOnInit() {
+    this.kueService.getAllKue().subscribe((res) => (this.menus = res));
   }
 
   tambahStock() {
-    if (
-      this.stockmasuk.jumlah_masuk.toString()=== '' || //aku nggak tahu
-      this.stockmasuk.tanggal_masuk.trim() === '' ||
-      this.stockmasuk.nama_menu.trim() === ''
-    ) {
-      alert('Semua data harus diisi');
-      return;
-    }
-    
-    this.submitting = true;
-    this.stockService.addStock(this.stockmasuk).subscribe({
-      next: (res) => {
-        alert('stock berhasil dikurangkan');
-        this.router.navigate(['/']); 
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        alert('Gagal menngurangi stock');
-      },
-      complete: () => {
-        this.submitting = false;
-      }
-    });
+    if (!this.selectedIdMenu || !this.jumlah || !this.tanggal)
+      return alert('Isi semua data');
+    this.stockService 
+      .tambahStock({
+        idmenu: this.selectedIdMenu,
+        jumlah: this.jumlah,
+        tanggal_masuk: this.tanggal,
+      })
+      .subscribe(() => alert('Stok masuk berhasil'));
   }
 
-  kurangiStock() {
-    if (
-      this.stockkeluar.jumlah_keluar.toString()=== '' || //aku nggak tahu
-      this.stockkeluar.tanggal_keluar.trim() === '' ||
-      this.stockkeluar.nama_menu.trim() === '' ||
-      this.stockkeluar.alasan.trim() === ''
-    ) {
-      alert('Semua data harus diisi');
-      return;
-    }
-    
-    this.submitting = true;
-    this.stockService.stockOut(this.stockkeluar).subscribe({
-      next: (res) => {
-        alert('stock berhasil dikurangkan');
-        this.router.navigate(['/']); 
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        alert('Gagal menngurangi stock');
-      },
-      complete: () => {
-        this.submitting = false;
-      }
-    });
+  kurangStock() {
+    if (!this.selectedIdMenu || !this.jumlah || !this.tanggal || !this.alasan) return alert('Isi semua data');
+    this.stockService.kurangiStock({
+      idmenu: this.selectedIdMenu,
+      jumlah_keluar: this.jumlah,
+      tanggal_keluar: this.tanggal,
+      alasan: this.alasan,
+    }).subscribe(() => alert('Stok keluar berhasil'));
   }
 }

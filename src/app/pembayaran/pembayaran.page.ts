@@ -52,7 +52,7 @@ export class PembayaranPage implements OnInit {
     this.orderService.uploadBuktiBayar(formData).subscribe({
       next: () => {
         alert('Bukti pembayaran berhasil dikirim! Menunggu verifikasi admin.');
-        this.router.navigate(['/daftarpesanan']);
+        this.router.navigate(['/katalog']);
       },
       error: (err) => {
         console.error(err);
