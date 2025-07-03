@@ -63,6 +63,18 @@ export class AppComponent {
       icon: 'checkmark-circle',
       protected: true,
     },
+    {
+      title: 'Daftar Stock Saat ini',
+      url: '/stock',
+      icon: 'storefront-outline',
+      protected: true,
+    },
+    {
+      title: 'Manajemen Stock',
+      url: '/stockmanager',
+      icon: 'cube-outline',
+      protected: true,
+    },
   ];
   constructor(public router: Router) {}
 
