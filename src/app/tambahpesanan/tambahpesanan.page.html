@@ -22,21 +22,103 @@
       <ion-card-content>
         <ion-list>
           <ion-item>
-            <ion-label position="floating">Pilih Customer <ion-text color="danger">*</ion-text></ion-label>
-            <br>
-            <ion-select [(ngModel)]="selectedCustomerId" placeholder="Pilih customer" interface="action-sheet">
-              <ion-select-option *ngFor="let customer of customers" [value]="customer.idcustomer">
+            <ion-label position="floating"
+              >Pilih Customer <ion-text color="danger">*</ion-text></ion-label
+            ><br>
+            <ion-select
+              [(ngModel)]="selectedCustomerId"
+              placeholder="Pilih Customer"
+              interface="action-sheet"
+            >
+              <ion-select-option
+                *ngFor="let customer of customers"
+                [value]="customer.idcustomer"
+              >
                 {{ customer.nama }}
               </ion-select-option>
             </ion-select>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Waktu Ambil <ion-text color="danger">*</ion-text></ion-label>
-            <br>
-            <ion-datetime [(ngModel)]="waktuAmbil" display-format="DD MMM YYYY HH:mm" picker-format="DD MMM YYYY HH:mm" placeholder="Pilih waktu ambil"></ion-datetime>
+          <ion-item *ngIf="tipeAmbil === 'langsung'">
+            <ion-label position="floating"
+              >Waktu Ambil <ion-text color="danger">*</ion-text></ion-label
+            ><br>
+            <ion-datetime
+              [(ngModel)]="waktuAmbil"
+              display-format="DD MMM YYYY HH:mm"
+              picker-format="DD MMM YYYY HH:mm"
+              placeholder="Pilih waktu ambil"
+            ></ion-datetime>
           </ion-item>
+
+          <ion-item>
+            <ion-label position="floating"
+              >Tipe Ambil <ion-text color="danger">*</ion-text></ion-label
+            >
+            <ion-select [(ngModel)]="tipeAmbil">
+              <ion-select-option value="langsung"
+                >Ambil Sendiri</ion-select-option
+              >
+              <ion-select-option value="kirim">Kirim</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ng-container *ngIf="tipeAmbil === 'kirim'">
+            <ion-item>
+              <ion-label position="floating">Nama Penerima</ion-label>
+              <ion-input [(ngModel)]="namaPenerima"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Telepon Penerima</ion-label>
+              <ion-input [(ngModel)]="teleponPenerima"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Alamat Kirim</ion-label>
+              <ion-textarea [(ngModel)]="alamatKirim"></ion-textarea>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Tanggal Kirim</ion-label>
+              <ion-datetime
+                [(ngModel)]="tanggalKirim"
+                display-format="DD MMM YYYY HH:mm"
+                picker-format="DD MMM YYYY HH:mm"
+                placeholder="Pilih waktu ambil"
+              ></ion-datetime>
+            </ion-item>
+          </ng-container>
         </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Kartu Ucapan (Opsional)</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Kepada</ion-label>
+          <ion-input [(ngModel)]="kartuKepada"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Ucapan</ion-label>
+          <ion-textarea [(ngModel)]="kartuUcapan"></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Dari</ion-label>
+          <ion-input [(ngModel)]="kartuDari"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Butuh Invoice?</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Invoice</ion-label>
+          <ion-toggle [(ngModel)]="butuhInvoice"></ion-toggle>
+        </ion-item>
       </ion-card-content>
     </ion-card>
 
@@ -68,9 +150,18 @@
           <ion-item *ngFor="let item of selectedProducts; let i = index">
             <ion-label>
               <h2>{{ item.nama }}</h2>
-              <p>{{ formatPrice(item.harga) }} x {{ item.kuantitas }} = {{ formatPrice(item.subtotal) }}</p>
+              <p>
+                {{ formatPrice(item.harga) }} x {{ item.kuantitas }} = {{
+                formatPrice(item.subtotal) }}
+              </p>
             </ion-label>
-            <ion-input type="number" [value]="item.kuantitas" (ionChange)="updateQuantity(i, $event)" slot="end" class="quantity-input"></ion-input>
+            <ion-input
+              type="number"
+              [value]="item.kuantitas"
+              (ionChange)="updateQuantity(i, $event)"
+              slot="end"
+              class="quantity-input"
+            ></ion-input>
             <ion-button slot="end" color="danger" (click)="removeProduct(i)">
               <ion-icon name="trash"></ion-icon>
             </ion-button>
@@ -80,14 +171,20 @@
             <ion-label>
               <h2>Total</h2>
             </ion-label>
-            <ion-note slot="end" color="primary">{{ formatPrice(totalHarga) }}</ion-note>
+            <ion-note slot="end" color="primary"
+              >{{ formatPrice(totalHarga) }}</ion-note
+            >
           </ion-item>
         </ion-list>
       </ion-card-content>
     </ion-card>
 
     <div class="ion-padding">
-      <ion-button expand="block" (click)="submitOrder()" [disabled]="submitting || selectedProducts.length === 0">
+      <ion-button
+        expand="block"
+        (click)="submitOrder()"
+        [disabled]="submitting || selectedProducts.length === 0"
+      >
         <ion-spinner name="crescent" *ngIf="submitting"></ion-spinner>
         <span *ngIf="!submitting">Buat Pesanan</span>
       </ion-button>

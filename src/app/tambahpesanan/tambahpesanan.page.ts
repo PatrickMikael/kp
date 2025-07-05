@@ -17,6 +17,16 @@ export class TambahpesananPage implements OnInit {
   waktuAmbil: string = '';
   selectedProducts: any[] = []; // Produk yang dipilih
   submitting: boolean = false;
+  tipeAmbil: string = 'langsung';
+  namaPenerima: string = '';
+  teleponPenerima: string = '';
+  alamatKirim: string = '';
+  tanggalKirim: string = '';
+  jamKirim: string = '';
+  kartuKepada: string = '';
+  kartuUcapan: string = '';
+  kartuDari: string = '';
+  butuhInvoice: boolean = false;
 
   constructor(
     private customerService: CustomerService,
@@ -85,14 +95,37 @@ export class TambahpesananPage implements OnInit {
 
   submitOrder() {
     this.submitting = true;
+
     const items = this.selectedProducts.map((item) => ({
       idmenu: item.idmenu,
       kuantitas: item.kuantitas,
     }));
+
+    // Hitung waktu_ambil berdasarkan tipe ambil
+    let waktuAmbilFinal = this.waktuAmbil;
+    if (this.tipeAmbil === 'kirim') {
+      if (!this.tanggalKirim || !this.jamKirim) {
+        alert('Tanggal dan jam kirim wajib diisi untuk pengiriman.');
+        this.submitting = false;
+        return;
+      }
+      waktuAmbilFinal = `${this.tanggalKirim}T${this.jamKirim}`;
+    }
+
     const payload = {
       idcustomer: this.selectedCustomerId,
-      waktu_ambil: this.waktuAmbil,
+      waktu_ambil: waktuAmbilFinal,
       items,
+      tipe_ambil: this.tipeAmbil,
+      nama_penerima: this.namaPenerima,
+      telepon_penerima: this.teleponPenerima,
+      alamat_kirim: this.alamatKirim,
+      tanggal_kirim: this.tanggalKirim,
+      jam_kirim: this.jamKirim,
+      kartu_kepada: this.kartuKepada,
+      kartu_ucapan: this.kartuUcapan,
+      kartu_dari: this.kartuDari,
+      invoice: this.butuhInvoice ? 'Ya' : 'Tidak',
     };
 
     console.log('Payload yang dikirim:', payload);
@@ -100,12 +133,7 @@ export class TambahpesananPage implements OnInit {
     this.orderService.createOrder(payload).subscribe({
       next: (res) => {
         alert('Pesanan berhasil ditambahkan');
-        const orderId = res.orderId; 
-
-        this.selectedCustomerId = null;
-        this.waktuAmbil = '';
-        this.selectedProducts = [];
-
+        const orderId = res.orderId;
         this.router.navigate(['/pembayaran', orderId]);
       },
       error: (err) => {
