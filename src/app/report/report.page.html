@@ -12,7 +12,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
+
   <!-- Segment untuk filter periode -->
   <ion-toolbar color="light">
     <ion-segment [(ngModel)]="selectedPeriod" (ionChange)="periodChanged()">
@@ -39,7 +39,7 @@
         <div class="summary-label">Total Penjualan</div>
       </ion-card-content>
     </ion-card>
-    
+
     <ion-card class="summary-card">
       <ion-card-content>
         <ion-icon name="receipt-outline" class="summary-icon"></ion-icon>
@@ -47,7 +47,7 @@
         <div class="summary-label">Total Pesanan</div>
       </ion-card-content>
     </ion-card>
-    
+
     <ion-card class="summary-card">
       <ion-card-content>
         <ion-icon name="people-outline" class="summary-icon"></ion-icon>
@@ -65,17 +65,31 @@
       </ion-card-subtitle>
       <ion-card-title>Menu Terlaris</ion-card-title>
     </ion-card-header>
-    
+
     <ion-card-content>
       <div *ngIf="loading" class="loading-container">
-        <ion-skeleton-text animated style="width: 100%; height: 30px;"></ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 100%; height: 30px;"></ion-skeleton-text>
-        <ion-skeleton-text animated style="width: 100%; height: 30px;"></ion-skeleton-text>
+        <ion-skeleton-text
+          animated
+          style="width: 100%; height: 30px"
+        ></ion-skeleton-text>
+        <ion-skeleton-text
+          animated
+          style="width: 100%; height: 30px"
+        ></ion-skeleton-text>
+        <ion-skeleton-text
+          animated
+          style="width: 100%; height: 30px"
+        ></ion-skeleton-text>
       </div>
-      
+
       <ion-list *ngIf="!loading && popularMenus.length > 0" lines="full">
-        <ion-item *ngFor="let menu of popularMenus; let i = index" class="popular-item">
-          <ion-badge slot="start" color="primary" class="rank-badge">{{ i + 1 }}</ion-badge>
+        <ion-item
+          *ngFor="let menu of popularMenus; let i = index"
+          class="popular-item"
+        >
+          <ion-badge slot="start" color="primary" class="rank-badge"
+            >{{ i + 1 }}</ion-badge
+          >
           <ion-label>
             <h2>{{ menu.menu_name }}</h2>
             <p>Terjual {{ menu.total_quantity }}x</p>
@@ -85,7 +99,7 @@
           </ion-note>
         </ion-item>
       </ion-list>
-      
+
       <div *ngIf="!loading && popularMenus.length === 0" class="empty-state">
         <ion-icon name="fast-food-outline" class="empty-icon"></ion-icon>
         <ion-text color="medium">Belum ada data menu terlaris.</ion-text>
@@ -146,13 +160,18 @@
       </ion-card-subtitle>
       <ion-card-title>Tagihan Customer</ion-card-title>
     </ion-card-header>
-    
+
     <ion-card-content>
       <!-- Dropdown Pilih Customer dengan styling yang lebih baik -->
       <ion-item class="customer-select">
         <ion-icon name="people" slot="start" color="primary"></ion-icon>
         <ion-label>Pilih Customer</ion-label>
-        <ion-select [(ngModel)]="selectedCustomerId" (ionChange)="loadCustomerBill()" interface="action-sheet" placeholder="Pilih customer">
+        <ion-select
+          [(ngModel)]="selectedCustomerId"
+          (ionChange)="loadCustomerBill()"
+          interface="action-sheet"
+          placeholder="Pilih customer"
+        >
           <ion-select-option *ngFor="let c of customers" [value]="c.idcustomer">
             {{ c.nama }}
           </ion-select-option>
@@ -164,27 +183,40 @@
         <ion-spinner name="crescent"></ion-spinner>
         <ion-text color="medium">Memuat data tagihan...</ion-text>
       </div>
-      
-      <ion-list *ngIf="!billLoading && customerBills.length > 0" lines="full" class="bill-list">
+
+      <ion-list
+        *ngIf="!billLoading && customerBills.length > 0"
+        lines="full"
+        class="bill-list"
+      >
         <ion-item *ngFor="let bill of customerBills" class="bill-item">
-          <ion-icon name="receipt-outline" slot="start" color="tertiary"></ion-icon>
+          <ion-icon
+            name="receipt-outline"
+            slot="start"
+            color="tertiary"
+          ></ion-icon>
           <ion-label>
             <h2 class="bill-id">Pesanan #{{ bill.idpesanan }}</h2>
             <div class="bill-details">
               <div class="bill-date">
                 <ion-icon name="calendar-outline"></ion-icon>
-                <br>
+                <br />
                 <span>{{ formatDate(bill.created_at) }}</span>
               </div>
               <div class="bill-pickup">
                 <ion-icon name="time-outline"></ion-icon>
-                <br>
+                <br />
                 <span>Ambil: {{ formatDate(bill.waktu_ambil) }}</span>
               </div>
             </div>
             <p class="bill-items">{{ bill.items }}</p>
           </ion-label>
-          <ion-badge slot="end" [color]="getBillStatusColor(bill.status)" class="bill-status">
+          <ion-badge
+            *ngIf="bill.status"
+            slot="end"
+            [color]="getBillStatusColor(bill.status)"
+            class="bill-status"
+          >
             {{ bill.status }}
           </ion-badge>
           <ion-note slot="end" color="success" class="bill-amount">
@@ -193,14 +225,21 @@
         </ion-item>
       </ion-list>
 
-      <div *ngIf="!billLoading && selectedCustomerId && customerBills.length === 0" class="empty-state">
+      <div
+        *ngIf="!billLoading && selectedCustomerId && customerBills.length === 0"
+        class="empty-state"
+      >
         <ion-icon name="receipt-outline" class="empty-icon"></ion-icon>
-        <ion-text color="medium">Belum ada tagihan untuk customer ini.</ion-text>
+        <ion-text color="medium"
+          >Belum ada tagihan untuk customer ini.</ion-text
+        >
       </div>
-      
+
       <div *ngIf="!billLoading && !selectedCustomerId" class="empty-state">
         <ion-icon name="person-outline" class="empty-icon"></ion-icon>
-        <ion-text color="medium">Pilih customer untuk melihat tagihan.</ion-text>
+        <ion-text color="medium"
+          >Pilih customer untuk melihat tagihan.</ion-text
+        >
       </div>
     </ion-card-content>
   </ion-card>

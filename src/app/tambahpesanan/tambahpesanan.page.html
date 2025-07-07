@@ -24,7 +24,7 @@
           <ion-item>
             <ion-label position="floating"
               >Pilih Customer <ion-text color="danger">*</ion-text></ion-label
-            ><br>
+            ><br />
             <ion-select
               [(ngModel)]="selectedCustomerId"
               placeholder="Pilih Customer"
@@ -42,12 +42,12 @@
           <ion-item *ngIf="tipeAmbil === 'langsung'">
             <ion-label position="floating"
               >Waktu Ambil <ion-text color="danger">*</ion-text></ion-label
-            ><br>
+            >
             <ion-datetime
               [(ngModel)]="waktuAmbil"
-              display-format="DD MMM YYYY HH:mm"
-              picker-format="DD MMM YYYY HH:mm"
-              placeholder="Pilih waktu ambil"
+              display-format="dd MMM yyyy HH:mm"
+              picker-format="dd MMM yyyy HH:mm"
+              placeholder="Pilih waktu  ambil"
             ></ion-datetime>
           </ion-item>
 
@@ -80,9 +80,19 @@
               <ion-label position="floating">Tanggal Kirim</ion-label>
               <ion-datetime
                 [(ngModel)]="tanggalKirim"
-                display-format="DD MMM YYYY HH:mm"
-                picker-format="DD MMM YYYY HH:mm"
-                placeholder="Pilih waktu ambil"
+                display-format="dd MMM yyyy"
+                picker-format="dd MMM yyyy"
+                placeholder="Pilih tanggal kirim"
+              ></ion-datetime>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Jam Kirim</ion-label>
+              <ion-datetime
+                [(ngModel)]="jamKirim"
+                display-format="HH:mm"
+                picker-format="HH:mm"
+                placeholder="Pilih jam kirim"
+                presentation="time"
               ></ion-datetime>
             </ion-item>
           </ng-container>

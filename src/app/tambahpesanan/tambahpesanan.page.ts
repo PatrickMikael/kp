@@ -101,32 +101,44 @@ export class TambahpesananPage implements OnInit {
       kuantitas: item.kuantitas,
     }));
 
-    // Hitung waktu_ambil berdasarkan tipe ambil
-    let waktuAmbilFinal = this.waktuAmbil;
-    if (this.tipeAmbil === 'kirim') {
-      if (!this.tanggalKirim || !this.jamKirim) {
-        alert('Tanggal dan jam kirim wajib diisi untuk pengiriman.');
-        this.submitting = false;
-        return;
-      }
-      waktuAmbilFinal = `${this.tanggalKirim}T${this.jamKirim}`;
-    }
-
-    const payload = {
+    let waktuAmbilFinal = '';
+    let payload: any = {
       idcustomer: this.selectedCustomerId,
-      waktu_ambil: waktuAmbilFinal,
-      items,
       tipe_ambil: this.tipeAmbil,
-      nama_penerima: this.namaPenerima,
-      telepon_penerima: this.teleponPenerima,
-      alamat_kirim: this.alamatKirim,
-      tanggal_kirim: this.tanggalKirim,
-      jam_kirim: this.jamKirim,
+      items,
       kartu_kepada: this.kartuKepada,
       kartu_ucapan: this.kartuUcapan,
       kartu_dari: this.kartuDari,
       invoice: this.butuhInvoice ? 'Ya' : 'Tidak',
     };
+
+    if (this.tipeAmbil === 'langsung') {
+      if (!this.waktuAmbil) {
+        alert('Waktu ambil wajib diisi.');
+        this.submitting = false;
+        return;
+      }
+      payload.waktu_ambil = this.waktuAmbil;
+      // Kolom kirim dikosongkan
+      payload.nama_penerima = null;
+      payload.telepon_penerima = null;
+      payload.alamat_kirim = null;
+      payload.tanggal_kirim = null;
+      payload.jam_kirim = null;
+    } else if (this.tipeAmbil === 'kirim') {
+      if (!this.tanggalKirim || !this.jamKirim) {
+        alert('Tanggal dan jam kirim wajib diisi.');
+        this.submitting = false;
+        return;
+      }
+      waktuAmbilFinal = `${this.tanggalKirim}T${this.jamKirim}`;
+      payload.waktu_ambil = waktuAmbilFinal;
+      payload.nama_penerima = this.namaPenerima;
+      payload.telepon_penerima = this.teleponPenerima;
+      payload.alamat_kirim = this.alamatKirim;
+      payload.tanggal_kirim = this.tanggalKirim;
+      payload.jam_kirim = this.jamKirim;
+    }
 
     console.log('Payload yang dikirim:', payload);
 

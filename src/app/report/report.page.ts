@@ -38,7 +38,33 @@ export class ReportPage implements OnInit {
     this.loadTotalRevenue();
     this.loadPopularMenus();
     this.loadMonthlySales();
+    this.loadSalesByPeriod();
     this.loadCustomers();
+  }
+
+  loadSalesByPeriod() {
+    this.loading = true;
+
+    let serviceCall;
+
+    switch (this.selectedPeriod) {
+      case 'week':
+        serviceCall = this.reportService.getWeeklySales();
+        break;
+      default:
+        serviceCall = this.reportService.getMonthlySales();
+    }
+
+    serviceCall.subscribe({
+      next: (res) => {
+        this.monthlySales = res;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.monthlySales = [];
+      },
+    });
   }
 
   loadTotalRevenue() {
@@ -136,7 +162,9 @@ export class ReportPage implements OnInit {
     return months[monthNumber - 1];
   }
 
-  getBillStatusColor(status: string): string {
+  getBillStatusColor(status: string | undefined | null): string {
+    if (!status) return 'medium'; // fallback jika status undefined/null
+
     switch (status.toLowerCase()) {
       case 'selesai':
         return 'success';
@@ -151,7 +179,7 @@ export class ReportPage implements OnInit {
 
   refreshData() {
     this.loadPopularMenus();
-    this.loadMonthlySales();
+    this.loadSalesByPeriod();
     this.loadCustomers();
     if (this.selectedCustomerId) {
       this.loadCustomerBill();
@@ -160,8 +188,7 @@ export class ReportPage implements OnInit {
 
   periodChanged() {
     // Implementasi filter berdasarkan periode
-    this.loadPopularMenus();
-    this.loadMonthlySales();
+    this.loadSalesByPeriod();
   }
 
   loadTotalCustomers() {

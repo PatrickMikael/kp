@@ -10,6 +10,10 @@ export class ReportService {
 
   constructor(private http: HttpClient) {}
 
+  getWeeklySales() {
+    return this.http.get<any[]>(`${this.baseUrl}/weekly`);
+  }
+
   getMonthlySales(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/monthly`);
   }
